@@ -1,9 +1,3 @@
-
-#Author: Asif Hassan
-#Main author:Shaikh Nazrul Islam
-
-
-
 import paramiko
 import scp
 import time
