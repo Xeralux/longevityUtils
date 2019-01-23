@@ -161,9 +161,12 @@ if __name__ == '__main__':
     main()
 
   
-#for NGCN
-#/usr/bin/python2.7 ~/Documents/python_automate/new_code.py  --ipcsvfile ~/Documents/python_automate/test_node_ip.csv  
-# --PathtoCopy /data/sensity/ --FiletoCopy ~/Downloads/fiat-lux-cnext.fwpkg  --PrivKey ~/.ssh/hasas2x
+## Instruction to RUN
+# python /Users/saadira/rsDevelopment/projects/longevityUtils/src/chklongnodetest.py --ipcsvfile /Users/saadira/
+# rsDevelopment/projects/longevityUtils/data/merlin_node_ip.csv --PrivKey ~/.ssh/saadira
+
+
+# python2.7 ~/python/script/chklongnodetest.py  --ipcsvfile ~/python/data/merlin_node_ip.csv   --PrivKey ~/.ssh/alkesh
 
 
 
