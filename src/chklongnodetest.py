@@ -16,8 +16,6 @@ import subprocess
 import datetime
 
 
-start_time = time.time()   
-
 def ConnectNode(ipcsvfile, UserName, PrivKey):    #Connection established
     connection = dict()
     with open(ipcsvfile) as csvfile:
@@ -56,6 +54,8 @@ def subprocess_cmd_2(connectionlist, command_2):
                         #print (result)
                 else:
                     continue 
+
+
 def subprocess_cmd_3(connectionlist, command_3):
     for key, value in connectionlist.items():
         hostip = key
@@ -94,13 +94,16 @@ def main():
     connectionlist = ConnectNode(ipcsvfile, UserName=UserName, PrivKey=PrivKey)
     cmdlist = ['cfgtool -k nodeid',
                'uptime -p',
-               'tail -10 /data/log/errors.log',
+               'tail -20 /data/log/errors.log',
                'cat /data/log/messages | grep Booting',
                'cat /data/log/messages.1 | grep Booting',
                'zcat /data/log/messages.*.gz | grep Booting',
+               'cat /data/log/messages | grep SEGV',
+               'cat /data/log/messages.1 | grep SEGV',
+               'zcat /data/log/messages.*.gz | grep SEGV',
                'cat /data/log/messages | grep Panic',
                'cat /data/log/messages | grep Killed',
-               'cat /data/log/messages|grep Exited']
+               'cat /data/log/messages | grep Exited']
 
     for cmd in cmdlist:
         print("\n<*********************** NEW CMD ***********************>")
