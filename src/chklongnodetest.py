@@ -13,6 +13,7 @@ import random
 import urllib
 import re
 import subprocess
+import datetime
 
 
 start_time = time.time()   
@@ -42,7 +43,7 @@ def subprocess_cmd_2(connectionlist, command_2):
         hostip = key
         connection = value
         stdin, stdout, stderr = connection.exec_command(command_2)
-        print ("**************************************************************")
+        print ("----------------------------------------------------------------")
         search_word = ['Release','Active','tcp']
         for line in stdout:
             line = line.strip('\n')
@@ -60,66 +61,14 @@ def subprocess_cmd_3(connectionlist, command_3):
         hostip = key
         connection = value
         stdin, stdout, stderr = connection.exec_command(command_3)
+        print ("----------------------------------------------------------------")
         for line in stdout:
             line = line.strip('\n')
             lines = line.split()
-            print line 
+            print line
 
-def subprocess_cmd_4(connectionlist):
-    for key, value in connectionlist.items():
-        hostip = key
-        connection = value
-        print ("***********************************************************************")
-        stdin, stdout, stderr = connection.exec_command('cfgtool -k nodeid') 
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('lsb_release -r')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('uptime -p')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('tail -10 /data/log/errors.log')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line 
-        stdin, stdout, stderr = connection.exec_command('cat /data/log/messages|grep Booting')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('zcat /data/log/messages.1.gz|grep Booting')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('zcat /data/log/messages.2.gz|grep Booting')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('cat /data/log/messages|grep Panic')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('cat /data/log/messages|grep Killed')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
-        stdin, stdout, stderr = connection.exec_command('cat /data/log/messages|grep Exited')
-        for line in stdout:
-            line = line.strip('\n')
-            lines = line.split()
-            print line
+
+
 
 def main():
     HostIp = "192.168.66.118"
@@ -143,22 +92,35 @@ def main():
 
 #*************Calling Function******************************
     connectionlist = ConnectNode(ipcsvfile, UserName=UserName, PrivKey=PrivKey)
-    cmdlist = ['cfgtool -k nodeid','uptime -p','tail -5 /data/log/errors.log']
-    #for cmd4 in connectionlist:
-    subprocess_cmd_4(connectionlist)
+    cmdlist = ['cfgtool -k nodeid',
+               'uptime -p',
+               'tail -10 /data/log/errors.log',
+               'cat /data/log/messages | grep Booting',
+               'cat /data/log/messages.1 | grep Booting',
+               'zcat /data/log/messages.*.gz | grep Booting',
+               'cat /data/log/messages | grep Panic',
+               'cat /data/log/messages | grep Killed',
+               'cat /data/log/messages|grep Exited']
+
     for cmd in cmdlist:
-        print("********************************************************")
+        print("\n<*********************** NEW CMD ***********************>")
         print ("checkcmd ..", cmd)
         subprocess_cmd_3(connectionlist, cmd)
-    process_check = ['lsb_release -r','systemctl status mediaserver','netstat -a|grep 9883', 'systemctl status nmm.service']
+
+    process_check = ['lsb_release -r',
+                     'systemctl status mediaserver',
+                     'netstat -a|grep 9883',
+                     'systemctl status nmm.service']
     for service in process_check:
-        print ("      ")
+        print ("\n<*********************** NEW CMD ***********************>")
         print ("checking .. ",service)
         subprocess_cmd_2(connectionlist, service)
-    ExecStart = time.time()
+
 
 if __name__ == '__main__':
+    print ("=================== Test START at: {0} ===================\n ".format(datetime.datetime.now()))
     main()
+    print ("\n=================== Test END at: {0} =================== ".format(datetime.datetime.now()))
 
   
 ## Instruction to RUN
