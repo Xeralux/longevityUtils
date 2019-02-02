@@ -9,6 +9,7 @@ def LongevityNodeTestMain():
     PrivKey = None
     connectionlist = dict()
 
+    # Parsing commandline arguments
     parser = argparse.ArgumentParser()
 #    parser.add_argument("--HostIp", default='92.168.65.103', help="Specify the HostIP")
     parser.add_argument("--Debug", action="store_true", help="Print detailed messages to stdout")
@@ -20,36 +21,47 @@ def LongevityNodeTestMain():
     PrivKey  = str(args.PrivKey)
     Debug = str(args.Debug)
 
-#*************Calling Function******************************
+    # Connecting to the test devices
     connectionlist = DeviceActionLib.ConnectNode(ipcsvfile, UserName=UserName, PrivKey=PrivKey)
 
-    process_check = ['lsb_release -r',
-                     'systemctl status mediaserver',
-                     'netstat -a|grep 9883',
-                     'systemctl status nmm.service']
-    for service in process_check:
-        print ("\n<*********************** NEW CMD ***********************>")
-        print ("checking .. ", service)
-        DeviceActionLib.subprocess_cmd_2(connectionlist, service)
-
-    cmdlist = ['cfgtool -k nodeid',
-               'uptime -p',
-               'tail -20 /data/log/errors.log',
-               'cat /data/log/messages | grep Booting',
-               'cat /data/log/messages.1 | grep Booting',
-               'zcat /data/log/messages.*.gz | grep Booting',
-               'cat /data/log/messages | grep SEGV',
-               'cat /data/log/messages.1 | grep SEGV',
-               'zcat /data/log/messages.*.gz | grep SEGV',
-               'cat /data/log/messages | grep Panic',
-               'cat /data/log/messages | grep Killed',
-               'cat /data/log/messages | grep Exited']
-
-    for cmd in cmdlist:
-        print("\n<*********************** NEW CMD ***********************>")
+    # Checking device basic status
+    basic_device_checks = ['cfgtool -k nodeid',
+                           'uptime -p',
+                           'lsb_release -r']
+    for cmd in basic_device_checks:
+        print("\n<<<<<<<<<<<<<<<<<<<<<<<<< NEW CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
         print ("checkcmd ..", cmd)
-        DeviceActionLib.subprocess_cmd_3(connectionlist, cmd)
+        DeviceActionLib.subprocess_to_execute_cmd(connectionlist, cmd)
 
+    # Checking different process status
+    process_checks = ['systemctl status nirung',
+                     'systemctl status shadow.service',
+                     'systemctl status *modem*',
+                     'systemctl status gate-keeper',
+                     'systemctl status mediaserver',
+                     'systemctl status *mve*',
+                     'netstat -a | grep 9883',
+                     'systemctl status nmm.service']
+    for service in process_checks:
+        print ("\n<<<<<<<<<<<<<<<<<<<<<<<<< NEW CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print ("checking .. ", service)
+        DeviceActionLib.subprocess_to_check_service(connectionlist, service)
+
+    # Checking different error in message log
+    message_checks = ['tail -20 /data/log/errors.log',
+                      'cat /data/log/messages | grep Booting',
+                      'cat /data/log/messages.1 | grep Booting',
+                      'zcat /data/log/messages.*.gz | grep Booting',
+                      'cat /data/log/messages | grep SEGV',
+                      'cat /data/log/messages.1 | grep SEGV',
+                      'zcat /data/log/messages.*.gz | grep SEGV',
+                      'cat /data/log/messages | grep Panic',
+                      'cat /data/log/messages | grep Killed',
+                      'cat /data/log/messages | grep Exited']
+    for cmd in message_checks:
+        print("\n<<<<<<<<<<<<<<<<<<<<<<<<< NEW CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
+        print ("checkcmd ..", cmd)
+        DeviceActionLib.subprocess_to_check_message_log(connectionlist, cmd)
 
 
 if __name__ == '__main__':

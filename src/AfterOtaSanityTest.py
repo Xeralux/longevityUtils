@@ -31,7 +31,7 @@ def sanityTestMain():
     for cmd in cmdlist:
         print("\n<*********************** NEW CMD ***********************>")
         print ("checkcmd ..", cmd)
-        DeviceActionLib.subprocess_cmd_3(connectionlist, cmd)
+        DeviceActionLib.subprocess_to_execute_cmd(connectionlist, cmd)
 
 
 if __name__ == '__main__':
