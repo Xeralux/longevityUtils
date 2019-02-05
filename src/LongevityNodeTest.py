@@ -27,7 +27,8 @@ def LongevityNodeTestMain():
     # Checking device basic status
     basic_device_checks = ['cfgtool -k nodeid',
                            'uptime -p',
-                           'lsb_release -r']
+                           'lsb_release -r',
+                           'cat /data/log/messages | grep exited | wc -l']
     print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Basic Device Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for cmd in basic_device_checks:
         print ("\n=> Checking cmd: {0}".format(cmd))
@@ -61,8 +62,10 @@ def LongevityNodeTestMain():
                       'cat /data/log/messages | grep panic',
                       'cat /data/log/messages.1 | grep panic',
                       'cat /data/log/messages | grep killed',
-                      'cat /data/log/messages.1 | grep killed',
-                      'cat /data/log/messages | grep exited']
+                      'cat /data/log/messages.1 | grep killed']
+                      # 'cat /data/log/messages | grep exited']
+
+
     print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Message Log Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for cmd in message_checks:
         print ("\n=> Checking cmd: {0}".format(cmd))
