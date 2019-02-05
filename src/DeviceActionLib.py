@@ -72,24 +72,24 @@ def subprocess_to_firmware_update(connectionlist, command_1):
     time.sleep(100)
 
 
-# def subprocess_cmd_2(connectionlist, command_2):
-#     for key, value in connectionlist.items():
-#         hostip = key
-#         connection = value
-#         stdin, stdout, stderr = connection.exec_command(command_2)
-#         print ("----------------------------------------------------------------")
-#         search_word = ['Release','Active','tcp', 'MQTT', 'Subscribe']
-#         for line in stdout:
-#             line = line.strip('\n')
-#             lines = line.split()
-#             for line_1 in lines:
-#                 for word in search_word:
-#                     if word in line_1:
-#                         print ("{0}  for IP= {1} ".format(line,hostip))
-#                         #result = subprocess.check_output(['uptime'])
-#                         #print (result)
-#                 else:
-#                     continue
+def subprocess_cmd_2(connectionlist, command_2):
+    for key, value in connectionlist.items():
+        hostip = key
+        connection = value
+        stdin, stdout, stderr = connection.exec_command(command_2)
+        print ("----------------------------------------------------------------")
+        search_word = ['Release','Active','tcp', 'MQTT', 'Subscribe']
+        for line in stdout:
+            line = line.strip('\n')
+            lines = line.split()
+            for line_1 in lines:
+                for word in search_word:
+                    if word in line_1:
+                        print ("{0}  for IP= {1} ".format(line,hostip))
+                        #result = subprocess.check_output(['uptime'])
+                        #print (result)
+                else:
+                    continue
 
 
 def subprocess_to_execute_cmd(connectionlist, command_3):
@@ -136,8 +136,8 @@ def subprocess_to_check_message_log(connectionlist, command):
         print ("Checking message log---------------{}\n".format(hostip))
         stdin, stdout, stderr = connection.exec_command(command)
         # line = stdout.readlines()
-        print ("----------------------------------------------------------------")
-        search_word = ['local0.warning', 'kern.err', 'local6.err', 'daemon.warning', 'daemon.err', 'exited', 'Warning']
+        # print ("----------------------------------------------------------------")
+        search_word = ['local0.warning', 'kern.err', 'local6.err', 'daemon.warning', 'daemon.err', 'exited', 'Warning', 'killed', 'KILL', 'SEGV' ]
         for line in stdout:
             line = line.strip('\n')
             lines = line.split()
@@ -145,7 +145,7 @@ def subprocess_to_check_message_log(connectionlist, command):
                 for word in search_word:
                     if word in line_1:  # and not linelist(search_word,line_1):
                         print (line)
-
+        print ("----------------------------------------------------------------")
 
 # *********** Executing command from CSV file**********************************
 def ExecCommand(connectionlist, cmdcsvfile):  # command execution

@@ -28,9 +28,9 @@ def LongevityNodeTestMain():
     basic_device_checks = ['cfgtool -k nodeid',
                            'uptime -p',
                            'lsb_release -r']
+    print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Basic Device Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for cmd in basic_device_checks:
-        print("\n<<<<<<<<<<<<<<<<<<<<<<<<< NEW CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print ("checkcmd ..", cmd)
+        print ("\n=> Checking cmd: {0}".format(cmd))
         DeviceActionLib.subprocess_to_execute_cmd(connectionlist, cmd)
 
     # Checking different process status
@@ -42,9 +42,9 @@ def LongevityNodeTestMain():
                      'systemctl status *mve*',
                      'netstat -a | grep 9883',
                      'systemctl status nmm.service']
+    print ("\n<<<<<<<<<<<<<<<<<<<<<<<<< Service Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for service in process_checks:
-        print ("\n<<<<<<<<<<<<<<<<<<<<<<<<< NEW CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print ("checking .. ", service)
+        print ("\n=> Checking cmd: {0}".format(service))
         DeviceActionLib.subprocess_to_check_service(connectionlist, service)
 
     # Checking different error in message log
@@ -55,12 +55,14 @@ def LongevityNodeTestMain():
                       'cat /data/log/messages | grep SEGV',
                       'cat /data/log/messages.1 | grep SEGV',
                       'zcat /data/log/messages.*.gz | grep SEGV',
-                      'cat /data/log/messages | grep Panic',
-                      'cat /data/log/messages | grep Killed',
-                      'cat /data/log/messages | grep Exited']
+                      'cat /data/log/messages | grep panic',
+                      'cat /data/log/messages.1 | grep panic',
+                      'cat /data/log/messages | grep killed',
+                      'cat /data/log/messages.1 | grep killed',
+                      'cat /data/log/messages | grep exited']
+    print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Message Log Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for cmd in message_checks:
-        print("\n<<<<<<<<<<<<<<<<<<<<<<<<< NEW CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
-        print ("checkcmd ..", cmd)
+        print ("\n=> Checking cmd: {0}".format(cmd))
         DeviceActionLib.subprocess_to_check_message_log(connectionlist, cmd)
 
 

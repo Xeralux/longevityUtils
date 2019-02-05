@@ -24,13 +24,13 @@ def sanityTestMain():
     connectionlist = DeviceActionLib.ConnectNode(ipcsvfile, UserName=UserName, PrivKey=PrivKey)
 
     cmdlist = ['cfgtool -k nodeid',
+               'lsb_release -r',
                'uptime -p',
-               'tail -20 /data/log/errors.log',
-               'Top.sh']
+               'sudo ./top.sh']
 
+    print("\n<*********************** Basic Device Check CMD ***********************>")
     for cmd in cmdlist:
-        print("\n<*********************** NEW CMD ***********************>")
-        print ("checkcmd ..", cmd)
+        print ("\n=> Checking cmd: {0}".format(cmd))
         DeviceActionLib.subprocess_to_execute_cmd(connectionlist, cmd)
 
 
