@@ -140,12 +140,29 @@ def subprocess_to_check_message_log(connectionlist, command):
         search_word = ['local0.warning', 'kern.err', 'local6.err', 'daemon.warning', 'daemon.err', 'exited', 'Warning', 'killed', 'KILL', 'SEGV' ]
         for line in stdout:
             line = line.strip('\n')
+            # lines = line.split()
+            print (line)
+        print ("----------------------------------------------------------------")
+
+
+def subprocess_to_check_message_log_with_search_keywords(connectionlist, command):
+    for key, value in connectionlist.items():
+        hostip = key
+        connection = value
+        print ("                                          ")
+        print ("Checking message log---------------{}\n".format(hostip))
+        stdin, stdout, stderr = connection.exec_command(command)
+        # line = stdout.readlines()
+        search_word = ['local0.warning', 'kern.err', 'local6.err', 'daemon.warning', 'daemon.err', 'exited', 'Warning', 'killed', 'KILL', 'SEGV' ]
+        for line in stdout:
+            line = line.strip('\n')
             lines = line.split()
             for line_1 in lines:
                 for word in search_word:
                     if word in line_1:  # and not linelist(search_word,line_1):
                         print (line)
         print ("----------------------------------------------------------------")
+
 
 # *********** Executing command from CSV file**********************************
 def ExecCommand(connectionlist, cmdcsvfile):  # command execution

@@ -49,7 +49,7 @@ def LongevityNodeTestMain():
         DeviceActionLib.subprocess_to_check_service(connectionlist, service)
 
     # Checking different error in message log
-    message_checks = ['tail -20 /data/log/errors.log',
+    message_checks = [#'tail -20 /data/log/errors.log',
                       'cat /data/log/messages | grep Booting',
                       'cat /data/log/messages.1 | grep Booting',
                       'zcat /data/log/messages.*.gz | grep Booting',
