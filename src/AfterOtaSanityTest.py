@@ -24,9 +24,13 @@ def sanityTestMain():
     connectionlist = DeviceActionLib.ConnectNode(ipcsvfile, UserName=UserName, PrivKey=PrivKey)
 
     cmdlist = ['cfgtool -k nodeid',
+               'date',
                'lsb_release -r',
                'uptime -p',
-               'sudo ./top.sh']
+               'sudo ./top.sh',
+               # 'cfgtool -match -k mediaserver.rtspsrc',
+               # 'cfgtool -k mediaserver.rtspsrc -local -v rtsp://192.168.67.156:8554/testconvert.ts',
+               'cfgtool -match -k mediaserver.rtspsrc']
 
     print("\n<*********************** Basic Device Check CMD ***********************>")
     for cmd in cmdlist:

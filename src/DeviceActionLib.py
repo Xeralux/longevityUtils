@@ -77,7 +77,7 @@ def subprocess_cmd_2(connectionlist, command_2):
         hostip = key
         connection = value
         stdin, stdout, stderr = connection.exec_command(command_2)
-        print ("----------------------------------------------------------------")
+        print ("---------------------------------------------------------------- {0} ".format(hostip))
         search_word = ['Release','Active','tcp', 'MQTT', 'Subscribe']
         for line in stdout:
             line = line.strip('\n')
@@ -97,7 +97,7 @@ def subprocess_to_execute_cmd(connectionlist, command_3):
         hostip = key
         connection = value
         stdin, stdout, stderr = connection.exec_command(command_3)
-        print ("----------------------------------------------------------------")
+        print ("---------------------------------------------------------------- {0} ".format(hostip))
         for line in stdout:
             line = line.strip('\n')
             lines = line.split()
@@ -110,7 +110,7 @@ def subprocess_to_check_service(connectionlist, command):
         connection = value
         stdin, stdout, stderr = connection.exec_command(command)
         # line = stdout.readlines()
-        print ("----------------------------------------------------------------")
+        print ("---------------------------------------------------------------- {0} ".format(hostip))
         for line in stdout:
             line = line.strip('\n')
             lines = line.split()
