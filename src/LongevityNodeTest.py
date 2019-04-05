@@ -10,6 +10,7 @@ def test_deviceBasicInfo(connectionlist):
                            'date',
                            'uptime -p',
                            'lsb_release -r',
+                           'netstat -a | grep 9883',
                            'cat /data/log/messages | grep exited | wc -l',
                            # 'find /data/crash/ -mtime -1 -type f -print | xargs ls -ltr',
                            'find /data/crash/ -mtime -1 -type f -print']
@@ -27,8 +28,8 @@ def test_deviceProcessStatus(connectionlist):
                       'systemctl status gate-keeper',
                       'systemctl status mediaserver',
                       'systemctl status mnrecorder',
-                      'systemctl status *mve*',
-                      'netstat -a | grep 9883']
+                      'systemctl status *mve*']
+                      # 'netstat -a | grep 9883']
     # 'systemctl status nmm.service']
     print ("\n<<<<<<<<<<<<<<<<<<<<<<<<< Service Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for service in process_checks:
@@ -36,32 +37,99 @@ def test_deviceProcessStatus(connectionlist):
         DeviceActionLib.subprocess_to_check_service(connectionlist, service)
 
 
+# def test_BootingErrorInMessageLog(connectionlist):
+#     print("INFO: Checking Booting error in message log")
+#     booting_checks = [  # 'tail -20 /data/log/errors.log',
+#         'cat /data/log/messages | grep Booting',
+#         'cat /data/log/messages.1 | grep Booting',
+#         'zcat /data/log/messages.2.gz | grep Booting'
+#     # 'zcat /data/log/messages.*.gz | grep Booting',
+#     ]
+#
+#     # print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Message Log Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
+#     for cmd in booting_checks:
+#         print ("\n=> Checking cmd: {0}".format(cmd))
+#         DeviceActionLib.subprocess_to_check_message_log(connectionlist, cmd)
+#
+#
+# def test_RebootInMessageLog(connectionlist):
+#     print("INFO: Checking Reboot in message log")
+#     reboot_checks = [  # 'tail -20 /data/log/errors.log',
+#         'cat /data/log/messages | grep Booting',
+#         'cat /data/log/messages.1 | grep Booting',
+#         'zcat /data/log/messages.2.gz | grep Booting'
+#         # 'zcat /data/log/messages.*.gz | grep Booting',
+#     ]
+#
+#     # print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Message Log Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
+#     for cmd in reboot_checks:
+#         print ("\n=> Checking cmd: {0}".format(cmd))
+#         DeviceActionLib.subprocess_to_check_message_log(connectionlist, cmd)
+#
+#
+# def test_SEGVErrorInMessageLog(connectionlist):
+#     print("INFO: Checking Reboot in message log")
+#     segv_checks = [ 'cat /data/log/messages | grep SEGV',
+#         'cat /data/log/messages.1 | grep SEGV',
+#         'zcat /data/log/messages.*.gz | grep SEGV'
+#     ]
+#
+#     # print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Message Log Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
+#     for cmd in segv_checks:
+#         print ("\n=> Checking cmd: {0}".format(cmd))
+#         DeviceActionLib.subprocess_to_check_message_log(connectionlist, cmd)
+#
+#
+# def test_SEGVErrorInMessageLog(connectionlist):
+#     print("INFO: Checking Reboot in message log")
+#     segv_checks = [ 'cat /data/log/messages | grep SEGV',
+#         'cat /data/log/messages.1 | grep SEGV',
+#         'zcat /data/log/messages.*.gz | grep SEGV'
+#     ]
+#
+#     # print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Message Log Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
+#     for cmd in segv_checks:
+#         print ("\n=> Checking cmd: {0}".format(cmd))
+#         DeviceActionLib.subprocess_to_check_message_log(connectionlist, cmd)
+
+
 def test_errorInMessageLog(connectionlist):
     print("INFO: Checking different error in message log")
     message_checks = [  # 'tail -20 /data/log/errors.log',
         'cat /data/log/messages | grep Booting',
         'cat /data/log/messages.1 | grep Booting',
-        'zcat /data/log/messages.2.gz | grep Booting',
-        'cat /data/log/messages | grep boot',
-        'cat /data/log/messages.1 | grep boot',
-        'zcat /data/log/messages.2.gz | grep boot',
+        # 'zcat /data/log/messages.2.gz | grep Booting',
+        'zcat /data/log/messages.*.gz | grep Booting',
+        'cat /data/log/messages | grep reboot',
+        'cat /data/log/messages.1 | grep reboot',
+        # 'zcat /data/log/messages.2.gz | grep reboot'
+        'zcat /data/log/messages.*.gz | grep reboot',
         'cat /data/log/messages | grep SEGV',
         'cat /data/log/messages.1 | grep SEGV',
-        'zcat /data/log/messages.2.gz | grep SEGV',
+        'zcat /data/log/messages.*.gz | grep SEGV',
         'cat /data/log/messages | grep panic',
         'cat /data/log/messages.1 | grep panic',
+        # 'zcat /data/log/messages.2.gz | grep panic',
+        'zcat /data/log/messages.*.gz | grep panic',
         'cat /data/log/messages | grep killed',
         'cat /data/log/messages.1 | grep killed',
+        'zcat /data/log/messages.2.gz | grep killed',
+        # 'zcat /data/log/messages.*.gz | grep killed',
         'cat /data/log/messages | grep "Pipeline stall"',
         'cat /data/log/messages.1 | grep "Pipeline stall"',
-        'zcat /data/log/messages.*.gz | grep "Pipeline stall"'
+        # 'zcat /data/log/messages.2.gz | grep "Pipeline stall"',
+        'zcat /data/log/messages.*.gz | grep "Pipeline stall"',
+        'cat /data/log/messages | grep "ABRT"',
+        'cat /data/log/messages.1 | grep "ABRT"',
+        # 'zcat /data/log/messages.2.gz | grep "ABRT"'
+        'zcat /data/log/messages.*.gz | grep "ABRT"',
         # 'cat /data/log/messages | grep "Failed to read registration status"',
         # 'cat /data/log/messages.1 | grep "Failed to read registration status"',
         # 'zcat /data/log/messages.*.gz | grep "Failed to read registration status"',
         # 'cat /data/log/messages | grep "PPP daemon is not running"',
         # 'cat /data/log/messages.1 | grep "PPP daemon is not running"',
         # 'zcat /data/log/messages.*.gz | grep "PPP daemon is not running"',
-        # 'cat /data/log/messages | grep "input/output error"',
+        'cat /data/log/messages | grep "input/output error"'
         # 'cat /data/log/messages.1 | grep "input/output error"',
         # 'zcat /data/log/messages.*.gz | grep "input/output error"'
     ]
