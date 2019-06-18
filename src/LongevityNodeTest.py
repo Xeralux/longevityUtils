@@ -10,10 +10,10 @@ def test_deviceBasicInfo(connectionlist):
                            'date',
                            'uptime -p',
                            'lsb_release -r',
-                           'netstat -a | grep 9883',
-                           'cat /data/log/messages | grep exited | wc -l',
+                           'netstat -a | grep 9883']
+                           # 'cat /data/log/messages | grep exited | wc -l',
                            # 'find /data/crash/ -mtime -1 -type f -print | xargs ls -ltr',
-                           'find /data/crash/ -mtime -1 -type f -print']
+                           # 'find /data/crash/ -mtime -1 -type f -print']
     print("\n<<<<<<<<<<<<<<<<<<<<<<<<< Basic Device Check CMD >>>>>>>>>>>>>>>>>>>>>>>>>>")
     for cmd in basic_device_checks:
         print ("\n=> Checking cmd: {0}".format(cmd))
@@ -23,11 +23,11 @@ def test_deviceBasicInfo(connectionlist):
 def test_deviceProcessStatus(connectionlist):
     print("INFO: Checking different process status")
     process_checks = ['systemctl status nirung',
-                      'systemctl status shadow.service',
-                      'systemctl status *modem*',
-                      'systemctl status gate-keeper',
-                      'systemctl status mediaserver',
-                      'systemctl status mnrecorder',
+                      # 'systemctl status shadow.service',
+                      # 'systemctl status *modem*',
+                      # 'systemctl status gate-keeper',
+                      # 'systemctl status mediaserver',
+                      # 'systemctl status mnrecorder',
                       'systemctl status *mve*']
                       # 'netstat -a | grep 9883']
     # 'systemctl status nmm.service']
@@ -129,9 +129,37 @@ def test_errorInMessageLog(connectionlist):
         # 'cat /data/log/messages | grep "PPP daemon is not running"',
         # 'cat /data/log/messages.1 | grep "PPP daemon is not running"',
         # 'zcat /data/log/messages.*.gz | grep "PPP daemon is not running"',
-        'cat /data/log/messages | grep "input/output error"'
+        'cat /data/log/messages | grep "input/output error"',
         # 'cat /data/log/messages.1 | grep "input/output error"',
         # 'zcat /data/log/messages.*.gz | grep "input/output error"'
+        #For KEVA-4545
+        'cat /data/log/messages | grep "ConfigStore open failed"',
+        'cat /data/log/messages.1 | grep "ConfigStore open failed"',
+        'zcat /data/log/messages.*.gz | grep "ConfigStore open failed"',
+
+        'cat /data/log/messages | grep "secmgmnt.service: Failed with result \'timeout\'"',
+        'cat /data/log/messages.1 | grep "secmgmnt.service: Failed with result \'timeout\'"',
+        'zcat /data/log/messages.*.gz | grep "secmgmnt.service: Failed with result \'timeout\'"',
+
+        'cat /data/log/messages | grep "Failed to start Configuration service"',
+        'cat /data/log/messages.1 | grep "Failed to start Configuration service"',
+        'zcat /data/log/messages.*.gz | grep "Failed to start Configuration service"',
+        # For KEVA-4340
+        'cat /data/log/messages | grep "Main process exited"',
+        'cat /data/log/messages.1 | grep "Main process exited"',
+        'cat /data/log/messages | grep "FAILURE"',
+        'cat /data/log/messages.1 | grep "FAILURE"',
+        # For KEVA-3580
+        'cat /data/log/messages | grep "Bad key (1)"',
+        'cat /data/log/messages.1 | grep "Bad key (1)"',
+        # For KEVA-4671
+        'cat /data/log/messages | grep "INVALIDARGUMENT"',
+        'cat /data/log/messages.1 | grep "INVALIDARGUMENT"',
+        # For KEVA-4340
+        'cat /data/log/messages | grep "EXITED due to failure in"',
+        'cat /data/log/messages.1 | grep "EXITED due to failure in"',
+
+
     ]
     # 'cat /data/log/messages | grep exited']
 
